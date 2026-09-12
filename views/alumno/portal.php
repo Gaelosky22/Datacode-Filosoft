@@ -26,6 +26,33 @@
                         <?= date('d/m/Y - H:i', strtotime($evento['fecha_hora_inicio'])) ?>
                     </p>
                     <p class="card-desc"><?= htmlspecialchars($evento['descripcion']) ?></p>
+                    <?php if ($evento['es_por_equipos']): ?>
+                        <div class="card-equipo">
+                            <?php $miEquipo = $estadoInscripcion[$evento['id']]['equipo'] ?? null; ?>
+
+                            <?php if ($miEquipo): ?>
+                                <span class="badge-inscrito">Tu equipo: <?= htmlspecialchars($miEquipo['equipos']['nombre'] ?? '') ?></span>
+
+                            <?php elseif (($estadoInscripcion[$evento['id']] ?? null) && $evento['modalidad_equipos'] === 'libre'): ?>
+                                <?php $disponibles = $equiposLibresPorEvento[$evento['id']] ?? []; ?>
+                                <?php if (empty($disponibles)): ?>
+                                    <span class="card-meta">Sin equipos con lugar disponible todavía.</span>
+                                <?php else: ?>
+                                    <form method="POST" action="?r=equipo&accion=elegir">
+                                        <select name="equipo_id" required>
+                                            <?php foreach ($disponibles as $eq): ?>
+                                                <option value="<?= htmlspecialchars($eq['id']) ?>"><?= htmlspecialchars($eq['nombre']) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" class="btn-inscribir">Unirme a equipo</button>
+                                    </form>
+                                <?php endif; ?>
+
+                            <?php elseif (($estadoInscripcion[$evento['id']] ?? null) && $evento['modalidad_equipos'] === 'aleatoria'): ?>
+                                <span class="card-meta">Se te asignará un equipo automáticamente al inscribirte.</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="card-footer">
                         <span class="card-cupo"><?= (int)$evento['cupo'] ?> lugares</span>
 

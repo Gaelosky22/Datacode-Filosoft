@@ -26,6 +26,23 @@
     </div>
 </section>
 
+<section class="container reto-seccion">
+    <div class="card-reto" role="button" tabindex="0" onclick="abrirRubricaModal()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();abrirRubricaModal();}">
+        <span class="pill">Buildathon 2027</span>
+        <h3>Data Code 2.0 — Sistemas digitales para la vida universitaria</h3>
+        <p class="card-desc">
+            Digitaliza un proceso real de tu Unidad Regional en 24 horas continuas: equipos de
+            3 a 5 integrantes, al menos dos roles con permisos distintos y persistencia real en
+            base de datos. Conoce el planteamiento completo y la rúbrica de 100 puntos.
+        </p>
+        <span class="card-link">Ver planteamiento y rúbrica completa →</span>
+    </div>
+</section>
+
+<div class="modal-overlay" id="rubricaOverlay" onclick="if(event.target === this) cerrarRubricaModal()">
+    <?php include __DIR__ . '/partials/rubrica_modal.php'; ?>
+</div>
+
 <section class="eventos container" id="eventos">
     <div class="section-heading"><div><p class="eyebrow">ENCUENTRA TU PRÓXIMA EXPERIENCIA</p><h2>Próximos eventos y talleres</h2></div><span class="section-note">Espacios para seguir aprendiendo</span></div>
     <div class="eventos-grid">

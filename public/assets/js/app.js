@@ -24,3 +24,50 @@ function cerrarModal() {
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') cerrarModal();
 });
+
+// Tarjeta de "Data Code 2.0 — Buildathon 2027" en el inicio
+function abrirRubricaModal() {
+    const overlay = document.getElementById('rubricaOverlay');
+    if (overlay) overlay.classList.add('abierto');
+}
+
+function cerrarRubricaModal() {
+    const overlay = document.getElementById('rubricaOverlay');
+    if (overlay) overlay.classList.remove('abierto');
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') cerrarRubricaModal();
+});
+
+// Menú kebab de "Mis eventos" (rol alumno, en el header de todo el sitio)
+document.addEventListener('DOMContentLoaded', function () {
+    const kebabBtn = document.getElementById('kebabBtn');
+    const kebabDropdown = document.getElementById('kebabDropdown');
+    const kebabMenu = document.getElementById('kebabMenu');
+
+    if (!kebabBtn || !kebabDropdown) return;
+
+    function cerrarKebab() {
+        kebabDropdown.classList.remove('abierto');
+        kebabBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    kebabBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const abierto = kebabDropdown.classList.toggle('abierto');
+        kebabBtn.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', function (e) {
+        if (kebabMenu && !kebabMenu.contains(e.target)) cerrarKebab();
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') cerrarKebab();
+    });
+
+    kebabDropdown.querySelectorAll('.kebab-opcion').forEach(function (opcion) {
+        opcion.addEventListener('click', cerrarKebab);
+    });
+});

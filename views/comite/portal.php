@@ -31,13 +31,13 @@
             </a>
         <?php endif; ?>
 
-        <?php if ($esComite): ?>
-            <article class="comite-tarjeta">
+        <?php if ($esComite || $esAdministrador): ?>
+            <a href="?r=comite&accion=propuestas" class="comite-tarjeta">
                 <span class="comite-icono" aria-hidden="true">✓</span>
                 <h3>Propuestas por votar</h3>
                 <p class="card-desc">Revisa, comenta y vota las propuestas pendientes.</p>
-                <span class="badge-proximamente">Próximamente</span>
-            </article>
+                <span class="comite-enlace">Revisar propuestas →</span>
+            </a>
             <article class="comite-tarjeta">
                 <span class="comite-icono" aria-hidden="true">$</span>
                 <h3>Presupuesto de eventos</h3>
@@ -56,12 +56,18 @@
         <?php endif; ?>
 
         <?php if ($esAdministrador): ?>
-            <article class="comite-tarjeta">
+            <a href="?r=admin&accion=propuestas" class="comite-tarjeta">
+                <span class="comite-icono" aria-hidden="true">◇</span>
+                <h3>Resolver propuestas</h3>
+                <p class="card-desc">Aprueba o rechaza propuestas antes de que cierre la votación.</p>
+                <span class="comite-enlace">Resolver pendientes →</span>
+            </a>
+            <a href="?r=admin&accion=comite" class="comite-tarjeta">
                 <span class="comite-icono" aria-hidden="true">○</span>
-                <h3>Gestión de usuarios y roles</h3>
-                <p class="card-desc">Asigna quién pertenece al comité y administra permisos.</p>
-                <span class="badge-proximamente">Próximamente</span>
-            </article>
+                <h3>Gestión de usuarios y comité</h3>
+                <p class="card-desc">Agrega o quita miembros del comité por sede.</p>
+                <span class="comite-enlace">Administrar usuarios →</span>
+            </a>
         <?php endif; ?>
 
     </div>

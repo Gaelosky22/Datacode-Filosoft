@@ -31,19 +31,42 @@
             <a href="/#eventos">Talleres y eventos</a>
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
             <?php if (!empty($_SESSION['usuario'])): ?>
-                <a href="?r=alumno&accion=index">Eventos por sede</a>
-                <?php
-                $rolesStaff = ['comite', 'docente', 'coordinacion', 'administrador'];
-                if (array_intersect($rolesStaff, $_SESSION['usuario']['roles'] ?? [])):
-                ?>
-                    <a href="?r=comite&accion=index">Comité</a>
-                <?php endif; ?>
-                <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
-            <?php else: ?>
-                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Comité</a>
-                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" class="nav-cta" onclick="return false;">Ingresar</a>
-            <?php endif; ?>
+    <a href="?r=alumno&accion=index">Eventos por sede</a>
+    <?php
+    $rolesStaff = ['comite', 'docente', 'coordinacion', 'administrador'];
+    if (array_intersect($rolesStaff, $_SESSION['usuario']['roles'] ?? [])):
+    ?>
+        <a href="?r=comite&accion=index">Comité</a>
+    <?php endif; ?>
+    <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+    <?php if (in_array('alumno', $_SESSION['usuario']['roles'] ?? [])): ?>
+        <div class="kebab-menu" id="kebabMenu">
+            <button type="button" class="kebab-btn" id="kebabBtn" aria-haspopup="true" aria-expanded="false" aria-label="Opciones de mis eventos">
+                <span class="kebab-dot"></span>
+                <span class="kebab-dot"></span>
+                <span class="kebab-dot"></span>
+            </button>
+            <div class="kebab-dropdown" id="kebabDropdown">
+                <button type="button" class="kebab-opcion"
+                        hx-get="?r=alumno&accion=misEventosModal&vista=inscrito"
+                        hx-target="#modalContenido"
+                        hx-swap="innerHTML">
+                    Eventos en los que estoy inscrito
+                </button>
+                <button type="button" class="kebab-opcion"
+                        hx-get="?r=alumno&accion=misEventosModal&vista=participare"
+                        hx-target="#modalContenido"
+                        hx-swap="innerHTML">
+                    Eventos en donde participaré
+                </button>
+            </div>
+        </div>
+    <?php endif; ?>
+    <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
+<?php else: ?>
+    <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Comité</a>
+    <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" class="nav-cta" onclick="return false;">Ingresar</a>
+<?php endif; ?>
         </nav>
     </div>
 </header>

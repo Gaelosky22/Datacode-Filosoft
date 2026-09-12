@@ -20,4 +20,13 @@ class EventoSede
             $this->db->request('/rest/v1/evento_sedes_permitidas', 'POST', $filas);
         }
     }
+
+    public function sedeTienePermiso($eventoId, $sedeId)
+{
+    $resultado = $this->db->request(
+        '/rest/v1/evento_sedes_permitidas?evento_id=eq.' . urlencode($eventoId)
+        . '&sede_id=eq.' . urlencode($sedeId) . '&select=id'
+    );
+    return !empty($resultado);
+}
 }

@@ -3,6 +3,8 @@ require_once __DIR__ . '/../core/Auth.php';
 require_once __DIR__ . '/../models/Evento.php';
 require_once __DIR__ . '/../models/Sede.php';
 require_once __DIR__ . '/../models/EventoSede.php';
+require_once __DIR__ . '/../models/Voto.php';
+require_once __DIR__ . '/../models/Comentario.php';
 class ComiteController
 {
     public function index()
@@ -21,6 +23,122 @@ class ComiteController
 
         require __DIR__ . '/../views/comite/portal.php';
     }
+
+    public function propuestas()
+{
+    Auth::requerirAlgunRol(['comite', 'administrador']);
+
+    $eventoModel = new Evento();
+    $eventos = $eventoModel->obtenerPropuestasParaComite($_SESSION['usuario']['sede_id']);
+
+    require __DIR__ . '/../views/comite/propuestas.php';
+}
+
+public function propuesta()
+{
+    Auth::requerirAlgunRol(['comite', 'administrador']);
+
+    $eventoId = $_GET['id'] ?? null;
+    $eventoModel = new Evento();
+    $evento = $eventoModel->obtenerPorId($eventoId);
+
+    if (!$evento) {
+        http_response_code(404);
+        echo 'Propuesta no encontrada';
+        return;
+    }
+
+    $eventoSedeModel = new EventoSede();
+    $miSedeId = $_SESSION['usuario']['sede_id'];
+
+    if (!$eventoSedeModel->sedeTienePermiso($eventoId, $miSedeId)) {
+        http_response_code(403);
+        require __DIR__ . '/../views/errores/403.php';
+        return;
+    }
+
+    $votoModel = new Voto();
+    $conteo = $votoModel->contarPorEvento($eventoId);
+    $yaVoto = $votoModel->yaVoto($eventoId, $_SESSION['usuario']['id']);
+    $votacionAbierta = strtotime($evento['fecha_cierre_votacion']) > time();
+
+    $comentarioModel = new Comentario();
+    $comentarios = $comentarioModel->obtenerPorEvento($eventoId);
+
+    $error = $_SESSION['flash_mensaje'] ?? null;
+    $errorTipo = $_SESSION['flash_tipo'] ?? null;
+    unset($_SESSION['flash_mensaje'], $_SESSION['flash_tipo']);
+
+    require __DIR__ . '/../views/comite/propuesta_detalle.php';
+}
+
+public function votar()
+{
+    Auth::requerirAlgunRol(['comite', 'administrador']);
+
+    $eventoId = $_POST['evento_id'] ?? null;
+    $sentido = $_POST['sentido'] ?? null;
+    $usuarioId = $_SESSION['usuario']['id'];
+
+    if (!in_array($sentido, ['a_favor', 'en_contra'])) {
+        $this->redirigirAPropuesta($eventoId, 'Voto inválido.', 'error');
+    }
+
+    $eventoModel = new Evento();
+    $evento = $eventoModel->obtenerPorId($eventoId);
+
+    if (!$evento || $evento['estado'] !== 'propuesta') {
+        $this->redirigirAPropuesta($eventoId, 'Esta propuesta ya no admite votos.', 'error');
+    }
+
+    if (strtotime($evento['fecha_cierre_votacion']) <= time()) {
+        $this->redirigirAPropuesta($eventoId, 'La votación para esta propuesta ya cerró.', 'error');
+    }
+
+    $eventoSedeModel = new EventoSede();
+    if (!$eventoSedeModel->sedeTienePermiso($eventoId, $_SESSION['usuario']['sede_id'])) {
+        $this->redirigirAPropuesta($eventoId, 'Tu sede no tiene permiso para votar esta propuesta.', 'error');
+    }
+
+    $votoModel = new Voto();
+    if ($votoModel->yaVoto($eventoId, $usuarioId)) {
+        $this->redirigirAPropuesta($eventoId, 'Ya emitiste tu voto en esta propuesta.', 'error');
+    }
+
+    $votoModel->crear($eventoId, $usuarioId, $sentido);
+
+    $this->redirigirAPropuesta($eventoId, 'Tu voto quedó registrado.', 'exito');
+}
+
+public function comentar()
+{
+    Auth::requerirAlgunRol(['comite', 'administrador']);
+
+    $eventoId = $_POST['evento_id'] ?? null;
+    $texto = trim($_POST['texto'] ?? '');
+
+    if ($texto === '') {
+        $this->redirigirAPropuesta($eventoId, 'Escribe un comentario antes de enviarlo.', 'error');
+    }
+
+    $eventoSedeModel = new EventoSede();
+    if (!$eventoSedeModel->sedeTienePermiso($eventoId, $_SESSION['usuario']['sede_id'])) {
+        $this->redirigirAPropuesta($eventoId, 'Tu sede no tiene permiso para comentar esta propuesta.', 'error');
+    }
+
+    $comentarioModel = new Comentario();
+    $comentarioModel->crear($eventoId, $_SESSION['usuario']['id'], $texto);
+
+    $this->redirigirAPropuesta($eventoId, 'Comentario publicado.', 'exito');
+}
+
+private function redirigirAPropuesta($eventoId, $mensaje, $tipo)
+{
+    $_SESSION['flash_mensaje'] = $mensaje;
+    $_SESSION['flash_tipo'] = $tipo;
+    header('Location: ?r=comite&accion=propuesta&id=' . urlencode($eventoId));
+    exit;
+}
 
     public function proponer()
     {

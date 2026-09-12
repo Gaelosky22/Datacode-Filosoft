@@ -1064,3 +1064,412 @@ a.comite-tarjeta:hover {
         min-height:210px;
     }
 }
+
+/* Navegación y menús de las features nuevas */
+.kebab-menu {
+    position:relative;
+}
+.kebab-btn {
+    width:36px;
+    height:36px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    padding:0;
+    background:var(--papel);
+    border:1px solid var(--borde);
+    border-radius:9px;
+    cursor:pointer;
+}
+.kebab-btn:hover {
+    background:var(--guinda-tint);
+    border-color:#e2becb;
+}
+.kebab-dot {
+    width:4px;
+    height:4px;
+    background:var(--tinta-suave);
+    border-radius:50%;
+}
+.kebab-dropdown {
+    display:none;
+    position:absolute;
+    top:calc(100% + 8px);
+    right:0;
+    width:260px;
+    padding:7px;
+    background:#fff;
+    border:1px solid var(--borde);
+    border-radius:12px;
+    box-shadow:0 18px 45px rgba(39,21,29,.14);
+    z-index:30;
+}
+.kebab-dropdown.abierto {
+    display:flex;
+    flex-direction:column;
+}
+.kebab-opcion {
+    padding:10px 11px;
+    color:var(--tinta);
+    background:none;
+    border:0;
+    border-radius:7px;
+    text-align:left;
+    font-size:.78rem;
+    cursor:pointer;
+}
+.kebab-opcion:hover {
+    color:var(--guinda);
+    background:var(--guinda-tint);
+}
+
+/* Modales de eventos y rúbrica */
+.modal-card-ancho {
+    max-width:820px;
+}
+.mis-eventos-lista {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:24px;
+}
+.mis-eventos-vacio {
+    padding:26px 18px;
+    color:var(--tinta-suave);
+    background:var(--papel);
+    border:1px dashed #d8c8cd;
+    border-radius:10px;
+    text-align:center;
+    font-size:.83rem;
+}
+.mis-evento-item {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:5px 18px;
+    padding:15px 17px;
+    background:var(--papel);
+    border:1px solid var(--borde);
+    border-radius:10px;
+}
+.mis-evento-titulo {
+    overflow-wrap:anywhere;
+    font-family:"Fraunces",Georgia,serif;
+    font-size:1rem;
+}
+.mis-evento-fecha {
+    color:var(--tinta-suave);
+    font-size:.73rem;
+}
+.mis-evento-item .card-link {
+    grid-column:2;
+    grid-row:1 / span 2;
+}
+.rubrica-bloque {
+    margin-top:30px;
+    padding-top:25px;
+    border-top:1px solid var(--borde);
+}
+.rubrica-bloque h3 {
+    margin-bottom:13px;
+    font-size:1.25rem;
+}
+.rubrica-bloque>p {
+    margin-bottom:10px;
+    color:var(--tinta-suave);
+    font-size:.84rem;
+}
+.rubrica-bloque p strong,.rubrica-notas strong {
+    color:var(--tinta);
+}
+.rubrica-datos,.rubrica-lista {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:11px;
+    margin-top:18px;
+}
+.rubrica-dato,.rubro-item {
+    padding:15px 16px;
+    background:var(--papel);
+    border:1px solid var(--borde);
+    border-radius:10px;
+}
+.rubrica-dato {
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+}
+.rubrica-dato span:first-child {
+    color:var(--guinda);
+    font-size:.65rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.rubrica-dato span:last-child,.rubro-item p,.rubrica-notas li {
+    color:var(--tinta-suave);
+    font-size:.78rem;
+}
+.rubro-encabezado {
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:8px;
+    font-size:.84rem;
+    font-weight:650;
+}
+.rubro-pts {
+    flex-shrink:0;
+    color:var(--guinda);
+}
+.rubrica-notas {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding-left:18px;
+}
+
+/* Votaciones, comentarios y resolución */
+.detalle-propuesta {
+    max-width:820px;
+}
+.detalle-propuesta>h2 {
+    margin-top:30px;
+}
+.votacion-timer {
+    margin:24px 0 18px;
+    padding:13px 16px;
+    color:var(--guinda-dark);
+    background:var(--guinda-tint);
+    border:1px solid #e7cbd5;
+    border-radius:10px;
+    font-size:.8rem;
+    font-weight:600;
+}
+.votacion-tally {
+    margin-bottom:24px;
+    color:var(--tinta-suave);
+    font-size:.78rem;
+}
+.tally-barra {
+    display:flex;
+    height:9px;
+    margin-bottom:9px;
+    overflow:hidden;
+    background:var(--borde);
+    border-radius:999px;
+}
+.tally-favor {
+    background:#538361;
+}
+.tally-contra {
+    background:var(--guinda);
+}
+.votacion-botones,.resolucion-botones {
+    display:flex;
+    gap:12px;
+    margin:16px 0 32px;
+}
+.resolucion-botones form {
+    flex:1;
+}
+.btn-voto,.resolucion-botones button {
+    width:100%;
+    min-height:44px;
+    padding:11px 16px;
+    color:#fff;
+    border:0;
+    border-radius:8px;
+    font-size:.79rem;
+    font-weight:650;
+    cursor:pointer;
+}
+.btn-voto {
+    flex:1;
+}
+.btn-voto-favor,.btn-aprobar {
+    background:#477657;
+}
+.btn-voto-favor:hover,.btn-aprobar:hover {
+    background:#365d43;
+}
+.btn-voto-contra,.btn-rechazar {
+    background:var(--guinda);
+}
+.btn-voto-contra:hover,.btn-rechazar:hover {
+    background:var(--guinda-dark);
+}
+.comentarios-titulo {
+    margin:32px 0 15px;
+    font-size:1.45rem;
+}
+.form-comentario {
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    margin-bottom:24px;
+}
+.form-comentario textarea {
+    flex:1;
+    min-height:76px;
+    padding:12px 13px;
+    background:#fff;
+    border:1px solid #dcd5d8;
+    border-radius:8px;
+    resize:vertical;
+    font:inherit;
+    font-size:.83rem;
+}
+.form-comentario .btn-primario {
+    width:auto;
+    margin-top:0;
+}
+.comentarios-lista {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.comentario-item {
+    padding:15px 17px;
+    background:var(--papel);
+    border:1px solid var(--borde);
+    border-radius:10px;
+}
+.comentario-autor {
+    margin-bottom:4px;
+    font-size:.8rem;
+    font-weight:650;
+}
+.comentario-texto {
+    margin-bottom:7px;
+    font-size:.82rem;
+}
+.comentario-fecha {
+    color:var(--tinta-suave);
+    font-size:.68rem;
+}
+
+/* Administración */
+.form-filtro-sede {
+    display:flex;
+    align-items:flex-end;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+    padding:20px;
+    background:#fff;
+    border:1px solid var(--borde);
+    border-radius:12px;
+}
+.form-filtro-sede .form-campo {
+    flex:1 1 220px;
+    margin-bottom:0;
+}
+.form-filtro-sede input,.form-filtro-sede select {
+    width:100%;
+    min-height:43px;
+    padding:9px 12px;
+    background:var(--papel);
+    border:1px solid #dcd5d8;
+    border-radius:8px;
+    font:inherit;
+    font-size:.8rem;
+}
+.btn-filtrar {
+    width:auto;
+    min-height:43px;
+    margin-top:0;
+    padding-inline:22px;
+}
+.tabla-scroll {
+    width:100%;
+    overflow-x:auto;
+    border:1px solid var(--borde);
+    border-radius:12px;
+    background:#fff;
+}
+.tabla-usuarios {
+    width:100%;
+    min-width:760px;
+    border-collapse:collapse;
+}
+.tabla-usuarios th,.tabla-usuarios td {
+    padding:13px 15px;
+    border-bottom:1px solid var(--borde);
+    text-align:left;
+    font-size:.78rem;
+}
+.tabla-usuarios th {
+    color:var(--tinta-suave);
+    background:var(--papel);
+    font-size:.68rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+}
+.tabla-usuarios tr:last-child td {
+    border-bottom:0;
+}
+.btn-agregar-comite,.btn-quitar-comite {
+    padding:8px 11px;
+    color:#fff;
+    border:0;
+    border-radius:7px;
+    font-size:.7rem;
+    font-weight:650;
+    cursor:pointer;
+}
+.btn-agregar-comite {
+    background:#477657;
+}
+.btn-quitar-comite {
+    background:var(--guinda);
+}
+.acciones-pagina {
+    padding-block:32px 54px;
+}
+.acciones-pagina .btn-primario {
+    display:inline-flex;
+    width:auto;
+    text-decoration:none;
+}
+
+@media(max-width:680px) {
+    .footer-inner .brand-emblem {
+        width:42px;
+        height:25px;
+    }
+    .kebab-menu {
+        width:100%;
+        padding-inline:12px;
+    }
+    .kebab-dropdown {
+        left:12px;
+        right:auto;
+        width:min(260px,calc(100vw - 44px));
+    }
+    .rubrica-datos,.rubrica-lista {
+        grid-template-columns:1fr;
+    }
+    .mis-evento-item {
+        grid-template-columns:1fr;
+    }
+    .mis-evento-item .card-link {
+        grid-column:auto;
+        grid-row:auto;
+        margin-top:6px;
+    }
+    .votacion-botones,.resolucion-botones,.form-comentario {
+        flex-direction:column;
+    }
+    .form-comentario .btn-primario {
+        width:100%;
+    }
+    .form-filtro-sede {
+        align-items:stretch;
+    }
+    .btn-filtrar {
+        width:100%;
+    }
+}

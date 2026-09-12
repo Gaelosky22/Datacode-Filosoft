@@ -54,4 +54,47 @@ public function crear($datos)
     return $this->db->request('/rest/v1/eventos', 'POST', $datos);
 }
 
+public function obtenerPropuestasParaComite($sedeId)
+{
+    $resultado = $this->db->request(
+        '/rest/v1/evento_sedes_permitidas?sede_id=eq.' . urlencode($sedeId)
+        . '&eventos.estado=eq.propuesta&select=eventos(*,sedes(nombre))&eventos.order=fecha_cierre_votacion.asc'
+    );
+
+    $eventos = [];
+    foreach ($resultado as $fila) {
+        if (!empty($fila['eventos'])) {
+            $eventos[] = $fila['eventos'];
+        }
+    }
+    return $eventos;
+}
+
+public function obtenerTodasPropuestas()
+{
+    return $this->db->request(
+        '/rest/v1/eventos?estado=eq.propuesta&select=*,sedes(nombre)&order=fecha_cierre_votacion.asc'
+    );
+}
+
+public function actualizar($id, $datos)
+{
+    return $this->db->request('/rest/v1/eventos?id=eq.' . urlencode($id), 'PATCH', $datos);
+}
+
+public function reducirCupo($id)
+{
+    $evento = $this->obtenerPorId($id);
+    if (!$evento) {
+        return null;
+    }
+
+    $nuevoCupo = max(0, (int)$evento['cupo'] - 1);
+    return $this->db->request(
+        '/rest/v1/eventos?id=eq.' . urlencode($id),
+        'PATCH',
+        ['cupo' => $nuevoCupo]
+    );
+}
+
 }
