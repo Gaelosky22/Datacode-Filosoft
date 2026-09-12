@@ -54,4 +54,20 @@ public function crear($datos)
     return $this->db->request('/rest/v1/eventos', 'POST', $datos);
 }
 
+public function obtenerPropuestasParaComite($sedeId)
+{
+    $resultado = $this->db->request(
+        '/rest/v1/evento_sedes_permitidas?sede_id=eq.' . urlencode($sedeId)
+        . '&eventos.estado=eq.propuesta&select=eventos(*,sedes(nombre))&eventos.order=fecha_cierre_votacion.asc'
+    );
+
+    $eventos = [];
+    foreach ($resultado as $fila) {
+        if (!empty($fila['eventos'])) {
+            $eventos[] = $fila['eventos'];
+        }
+    }
+    return $eventos;
+}
+
 }
