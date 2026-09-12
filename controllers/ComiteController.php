@@ -26,7 +26,7 @@ class ComiteController
 
     public function propuestas()
 {
-    Auth::requerirRol('comite');
+    Auth::requerirAlgunRol(['comite', 'administrador']);
 
     $eventoModel = new Evento();
     $eventos = $eventoModel->obtenerPropuestasParaComite($_SESSION['usuario']['sede_id']);
@@ -36,7 +36,7 @@ class ComiteController
 
 public function propuesta()
 {
-    Auth::requerirRol('comite');
+    Auth::requerirAlgunRol(['comite', 'administrador']);
 
     $eventoId = $_GET['id'] ?? null;
     $eventoModel = new Evento();
@@ -74,7 +74,7 @@ public function propuesta()
 
 public function votar()
 {
-    Auth::requerirRol('comite');
+    Auth::requerirAlgunRol(['comite', 'administrador']);
 
     $eventoId = $_POST['evento_id'] ?? null;
     $sentido = $_POST['sentido'] ?? null;
@@ -112,7 +112,7 @@ public function votar()
 
 public function comentar()
 {
-    Auth::requerirRol('comite');
+    Auth::requerirAlgunRol(['comite', 'administrador']);
 
     $eventoId = $_POST['evento_id'] ?? null;
     $texto = trim($_POST['texto'] ?? '');
@@ -139,7 +139,7 @@ private function redirigirAPropuesta($eventoId, $mensaje, $tipo)
     header('Location: ?r=comite&accion=propuesta&id=' . urlencode($eventoId));
     exit;
 }
-    
+
     public function proponer()
     {
         Auth::requerirRol('docente');
