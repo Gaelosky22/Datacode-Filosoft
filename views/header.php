@@ -29,13 +29,19 @@
             <a href="#eventos">Talleres y eventos</a>
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
             <?php if (!empty($_SESSION['usuario'])): ?>
-                <a href="?r=alumno&accion=index">Eventos por sede</a>
-                <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-                <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
-            <?php else: ?>
-                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Comité</a>
-                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" class="nav-cta" onclick="return false;">Ingresar</a>
-            <?php endif; ?>
+    <a href="?r=alumno&accion=index">Eventos por sede</a>
+    <?php
+    $rolesStaff = ['comite', 'docente', 'coordinacion', 'administrador'];
+    if (array_intersect($rolesStaff, $_SESSION['usuario']['roles'] ?? [])):
+    ?>
+        <a href="?r=comite&accion=index">Comité</a>
+    <?php endif; ?>
+    <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+    <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
+<?php else: ?>
+    <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Comité</a>
+    <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" class="nav-cta" onclick="return false;">Ingresar</a>
+<?php endif; ?>
         </nav>
     </div>
 </header>

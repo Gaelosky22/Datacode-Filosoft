@@ -376,3 +376,72 @@ h1, h2, h3 {
   font-weight: 500;
   margin-top: -0.4rem;
 }
+
+.comite-secciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+.comite-tarjeta {
+  background: #FFFFFF;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 1.4rem;
+}
+.comite-tarjeta h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.badge-proximamente {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--tinta-suave);
+  font-style: italic;
+}
+
+.comite-tarjeta { text-decoration: none; color: inherit; display: block; transition: border-color 0.15s ease; }
+.comite-tarjeta:hover { border-color: var(--guinda); }
+
+.form-propuesta {
+  background: #FFFFFF;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 720px;
+}
+.form-fila { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-campo { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 1rem; }
+.form-campo label { font-size: 0.85rem; color: var(--tinta-suave); }
+.form-campo input, .form-campo select, .form-campo textarea {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+.form-campo input:focus, .form-campo select:focus, .form-campo textarea:focus {
+  outline: none;
+  border-color: var(--guinda);
+}
+.form-checkbox { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+.form-checkbox label { font-size: 0.9rem; color: var(--tinta); }
+
+@media (max-width: 640px) {
+  .form-fila { grid-template-columns: 1fr; }
+}
+
+.form-ayuda {
+  font-size: 0.8rem;
+  color: var(--tinta-suave);
+  margin-bottom: 0.6rem;
+}
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+}
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--tinta);
+}

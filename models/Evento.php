@@ -36,10 +36,22 @@ class Evento
 
 public function obtenerDisponiblesParaAlumno($sedeId)
 {
-    return $this->db->request(
-        '/rest/v1/eventos?estado=eq.publicado&sede_id=eq.' . urlencode($sedeId)
-        . '&select=*,sedes(nombre)&order=fecha_hora_inicio.asc'
+    $resultado = $this->db->request(
+        '/rest/v1/evento_sedes_permitidas?sede_id=eq.' . urlencode($sedeId)
+        . '&eventos.estado=eq.publicado&select=eventos(*,sedes(nombre))&eventos.order=fecha_hora_inicio.asc'
     );
+
+    $eventos = [];
+    foreach ($resultado as $fila) {
+        if (!empty($fila['eventos'])) {
+            $eventos[] = $fila['eventos'];
+        }
+    }
+    return $eventos;
+}
+public function crear($datos)
+{
+    return $this->db->request('/rest/v1/eventos', 'POST', $datos);
 }
 
 }
