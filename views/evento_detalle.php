@@ -1,29 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($evento['titulo']) ?> — Data Code</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/pico.min.css">
-    <link rel="stylesheet" href="/assets/css/uadeo-theme.css">
-</head>
-<body>
+<?php
+$tituloPagina = htmlspecialchars($evento['titulo']) . ' — Data Code';
+require __DIR__ . '/header.php';
+?>
 
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="/" class="wordmark">Data Code<span class="wordmark-dot">.</span></a>
-    </div>
-</header>
-
-<main class="container detalle-evento">
+<section class="container detalle-evento">
     <a href="/" class="detalle-volver">&larr; Volver a eventos</a>
 
     <span class="pill pill-<?= strtolower($evento['tipo']) ?>"><?= ucfirst($evento['tipo']) ?></span>
     <h1><?= htmlspecialchars($evento['titulo']) ?></h1>
-    <p class="hero-lead"><?= htmlspecialchars($evento['descripcion']) ?></p>
+    <p class="detalle-descripcion"><?= htmlspecialchars($evento['descripcion']) ?></p>
 
     <div class="detalle-lista">
         <div class="detalle-fila">
@@ -51,11 +36,6 @@
             <span><?= $evento['tiene_cuota'] ? '$' . number_format($evento['cuota'], 2) : 'Gratuito' ?></span>
         </div>
     </div>
-</main>
+</section>
 
-<footer class="site-footer container">
-    <p>Data Code — UAdeO Unidad Regional Guamúchil</p>
-</footer>
-
-</body>
-</html>
+<?php require __DIR__ . '/footer.php'; ?>

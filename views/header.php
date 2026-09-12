@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
 
 <header class="site-header">
     <div class="header-top">
@@ -24,9 +25,9 @@
         <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
-        <nav class="site-nav" id="siteNav">
+        <nav class="site-nav" id="siteNav" aria-label="Navegación principal">
             <a href="/">Inicio</a>
-            <a href="#eventos">Talleres y eventos</a>
+            <a href="/#eventos">Talleres y eventos</a>
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
             <?php if (!empty($_SESSION['usuario'])): ?>
                 <a href="?r=alumno&accion=index">Eventos por sede</a>
@@ -40,4 +41,4 @@
     </div>
 </header>
 
-<main>
+<main id="contenido">

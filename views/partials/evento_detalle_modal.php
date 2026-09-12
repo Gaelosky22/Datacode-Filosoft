@@ -29,5 +29,5 @@
             <span>Costo</span>
             <span><?= $evento['tiene_cuota'] ? '$' . number_format($evento['cuota'], 2) : 'Gratuito' ?></span>
         </div>
-    </div>
+    </div>    
 </div>

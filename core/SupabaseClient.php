@@ -2,8 +2,8 @@
 
 class SupabaseClient
 {
-    private string $url;
-    private string $anonKey;
+    private $url;
+    private $anonKey;
 
     public function __construct()
     {
