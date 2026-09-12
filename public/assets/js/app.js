@@ -40,18 +40,13 @@ document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') cerrarRubricaModal();
 });
 
-// Menú kebab del portal de alumnos (Mis eventos)
+// Menú kebab de "Mis eventos" (rol alumno, en el header de todo el sitio)
 document.addEventListener('DOMContentLoaded', function () {
     const kebabBtn = document.getElementById('kebabBtn');
     const kebabDropdown = document.getElementById('kebabDropdown');
     const kebabMenu = document.getElementById('kebabMenu');
 
     if (!kebabBtn || !kebabDropdown) return;
-
-    const titulos = {
-        inscrito: 'Eventos en los que estoy inscrito',
-        participare: 'Eventos en donde participaré',
-    };
 
     function cerrarKebab() {
         kebabDropdown.classList.remove('abierto');
@@ -73,28 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     kebabDropdown.querySelectorAll('.kebab-opcion').forEach(function (opcion) {
-        opcion.addEventListener('click', function () {
-            const vista = opcion.dataset.vista;
-            const listaInscrito = document.getElementById('listaInscrito');
-            const listaParticipare = document.getElementById('listaParticipare');
-            const misEventosTitulo = document.getElementById('misEventosTitulo');
-            const misEventos = document.getElementById('misEventos');
-
-            if (listaInscrito && listaParticipare) {
-                listaInscrito.hidden = vista !== 'inscrito';
-                listaParticipare.hidden = vista !== 'participare';
-            }
-            if (misEventosTitulo && titulos[vista]) {
-                misEventosTitulo.textContent = titulos[vista];
-            }
-
-            kebabDropdown.querySelectorAll('.kebab-opcion').forEach(function (op) {
-                op.classList.toggle('activa', op === opcion);
-            });
-
-            cerrarKebab();
-
-            if (misEventos) misEventos.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+        opcion.addEventListener('click', cerrarKebab);
     });
 });
