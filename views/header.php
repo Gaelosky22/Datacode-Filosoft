@@ -28,8 +28,13 @@
             <a href="/">Inicio</a>
             <a href="#eventos">Talleres y eventos</a>
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
-            <a href="?r=comite&accion=index">Comité</a>
-            <a href="?r=auth&accion=login" class="nav-cta">Ingresar</a>
+            <?php if (!empty($_SESSION['usuario'])): ?>
+                <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
+                <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
+            <?php else: ?>
+                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Comité</a>
+                <a href="#" hx-get="?r=auth&accion=login" hx-target="#modalContenido" hx-swap="innerHTML" class="nav-cta" onclick="return false;">Ingresar</a>
+            <?php endif; ?>
         </nav>
     </div>
 </header>

@@ -264,3 +264,51 @@ h1, h2, h3 {
 }
 .modal-cerrar:hover { color: var(--guinda); }
 .modal-desc { color: var(--tinta-suave); margin: 0.75rem 0 0; }
+
+.nav-usuario {
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+}
+
+.modal-login h2 { margin-bottom: 0.4rem; }
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+}
+.form-login label {
+  font-size: 0.85rem;
+  color: var(--tinta-suave);
+  margin-top: 0.6rem;
+}
+.form-login input {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+.form-login input:focus {
+  outline: none;
+  border-color: var(--guinda);
+}
+.btn-primario {
+  margin-top: 1rem;
+  background: var(--guinda);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.btn-primario:hover { background: var(--guinda-dark); }
+
+.mensaje-error-modal {
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+  padding: 0;
+}
