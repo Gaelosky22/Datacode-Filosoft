@@ -12,6 +12,7 @@ $mapa = [
     'auth' => 'AuthController',
     'alumno' => 'AlumnoController',
     'comite' => 'ComiteController',
+    'admin' => 'AdminController',
 ];
 
 if (!isset($mapa[$controlador])) {

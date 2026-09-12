@@ -612,3 +612,58 @@ h1, h2, h3 {
 .comentario-autor { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.2rem; }
 .comentario-texto { font-size: 0.92rem; color: var(--tinta); margin-bottom: 0.2rem; }
 .comentario-fecha { font-size: 0.75rem; color: var(--tinta-suave); }
+
+.form-filtro-sede { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+.form-filtro-sede label { font-size: 0.9rem; color: var(--tinta-suave); }
+.form-filtro-sede select {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFFFF;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.tabla-usuarios th, .tabla-usuarios td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--borde);
+}
+.tabla-usuarios th { background: var(--fondo); font-weight: 500; color: var(--tinta-suave); }
+
+.btn-agregar-comite, .btn-quitar-comite {
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #FFFFFF;
+}
+.btn-agregar-comite { background: #4A9B5E; }
+.btn-agregar-comite:hover { background: #3D8250; }
+.btn-quitar-comite { background: var(--guinda); }
+.btn-quitar-comite:hover { background: var(--guinda-dark); }
+
+.form-filtro-sede {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.form-filtro-sede .form-campo { margin-bottom: 0; }
+.form-filtro-sede input, .form-filtro-sede select {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+.btn-filtrar { padding: 0.55rem 1.2rem; }
