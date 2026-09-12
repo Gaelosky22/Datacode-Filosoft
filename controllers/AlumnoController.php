@@ -81,6 +81,10 @@ class AlumnoController
             $this->redirigirConError('Ese evento ya no existe.');
         }
 
+        if ((int)$evento['cupo'] <= 0) {
+            $this->redirigirConError('Lo sentimos, este evento ya no tiene lugares disponibles.');
+        }
+
         $inscripcionModel = new Inscripcion();
         $existentes = $inscripcionModel->delUsuario($usuarioId);
         $fechaNueva = date('Y-m-d', strtotime($evento['fecha_hora_inicio']));
@@ -107,6 +111,8 @@ class AlumnoController
             $numeroParticipante = $inscripcionModel->contarPorEvento($eventoId);
             $folio = $gafeteModel->generarFolio($eventoId, $numeroParticipante);
             $gafeteModel->crear($inscripcionId, $folio, 'alumno');
+
+            $eventoModel->reducirCupo($eventoId);
 
             $this->redirigirConExito('Te inscribiste a "' . $evento['titulo'] . '". Tu gafete ya está listo.');
         }
@@ -141,6 +147,8 @@ class AlumnoController
         $numeroParticipante = $inscripcionModel->contarPorEvento($eventoId);
         $folio = $gafeteModel->generarFolio($eventoId, $numeroParticipante);
         $gafeteModel->crear($inscripcionId, $folio, 'alumno');
+
+        $eventoModel->reducirCupo($eventoId);
 
         $this->redirigirConExito('Pago realizado — simulación. No se efectuó ningún cobro real. Tu gafete ya está listo.');
     }
