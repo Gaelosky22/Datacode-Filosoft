@@ -1,6 +1,7 @@
 <?php
 session_start();
-
+require_once __DIR__ . '/../core/Env.php';
+Env::load(__DIR__ . '/../.env');
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 

@@ -3,12 +3,15 @@ require_once __DIR__ . '/../models/Evento.php';
 
 class InicioController
 {
+    
     public function index()
     {
         $modelo = new Evento();
         $eventos = $modelo->obtenerPublicados();
         require __DIR__ . '/../views/inicio.php';
     }
+
+    
 
     public function detalle()
 {
