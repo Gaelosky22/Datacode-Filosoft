@@ -45,6 +45,28 @@ class AlumnoController
         require __DIR__ . '/../views/alumno/portal.php';
     }
 
+    public function misEventosModal()
+    {
+        Auth::requerirRol('alumno');
+
+        $vista = $_GET['vista'] ?? 'inscrito';
+        $usuarioId = $_SESSION['usuario']['id'];
+
+        $inscripcionModel = new Inscripcion();
+        $misInscripciones = $inscripcionModel->delUsuario($usuarioId);
+
+        $gafeteModel = new Gafete();
+        $estadoInscripcion = [];
+        foreach ($misInscripciones as $insc) {
+            $estadoInscripcion[$insc['evento_id']] = [
+                'inscripcion_id' => $insc['id'],
+                'gafete' => $gafeteModel->obtenerPorInscripcion($insc['id']),
+            ];
+        }
+
+        require __DIR__ . '/../views/partials/mis_eventos_modal.php';
+    }
+
     public function inscribir()
     {
         Auth::requerirRol('alumno');
