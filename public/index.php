@@ -10,6 +10,7 @@ $accion = $_GET['accion'] ?? 'index';
 $mapa = [
     'inicio' => 'InicioController',
     'auth' => 'AuthController',
+    'alumno' => 'AlumnoController',
 ];
 
 if (!isset($mapa[$controlador])) {

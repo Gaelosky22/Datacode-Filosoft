@@ -36,6 +36,7 @@ class AuthController
             'id' => $usuario['id'],
             'nombre' => $usuario['nombre'],
             'matricula' => $usuario['matricula'],
+            'sede_id' => $usuario['sede_id'],
             'roles' => $roles,
         ];
 

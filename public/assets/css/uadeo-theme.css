@@ -312,3 +312,29 @@ h1, h2, h3 {
   margin-top: 0.75rem;
   padding: 0;
 }
+
+.mensaje-flash {
+  padding: 0.85rem 1.1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.mensaje-exito { background: #E6F1E6; color: #1E5C1E; }
+.mensaje-error { background: #FBE7E5; color: #B3261E; }
+
+.card-evento-alumno { cursor: default; }
+.btn-inscribir {
+  background: var(--guinda);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.btn-inscribir:hover { background: var(--guinda-dark); }
+.badge-inscrito {
+  font-size: 0.8rem;
+  color: var(--tinta-suave);
+  font-style: italic;
+}

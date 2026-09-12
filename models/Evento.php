@@ -34,4 +34,12 @@ class Evento
     );
 }
 
+public function obtenerDisponiblesParaAlumno($sedeId)
+{
+    return $this->db->request(
+        '/rest/v1/eventos?estado=eq.publicado&sede_id=eq.' . urlencode($sedeId)
+        . '&select=*,sedes(nombre)&order=fecha_hora_inicio.asc'
+    );
+}
+
 }

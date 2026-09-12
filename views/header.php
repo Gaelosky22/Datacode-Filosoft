@@ -29,6 +29,9 @@
             <a href="#eventos">Talleres y eventos</a>
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
             <?php if (!empty($_SESSION['usuario'])): ?>
+                <?php if (in_array('alumno', $_SESSION['usuario']['roles'] ?? [])): ?>
+                    <a href="?r=alumno&accion=index">Mi portal</a>
+                <?php endif; ?>
                 <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                 <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
             <?php else: ?>
