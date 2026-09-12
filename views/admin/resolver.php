@@ -89,17 +89,26 @@
         <button type="submit" class="btn-primario">Guardar cambios</button>
     </form>
 
-    <h2 class="comentarios-titulo">Resolución final</h2>
-    <div class="resolucion-botones">
-        <form method="POST" action="?r=admin&accion=aprobar" onsubmit="return confirm('¿Aprobar y publicar esta propuesta ahora mismo?');">
-            <input type="hidden" name="evento_id" value="<?= htmlspecialchars($evento['id']) ?>">
-            <button type="submit" class="btn-voto btn-voto-favor">Aprobar y publicar</button>
-        </form>
-        <form method="POST" action="?r=admin&accion=rechazar" onsubmit="return confirm('¿Rechazar esta propuesta?');">
-            <input type="hidden" name="evento_id" value="<?= htmlspecialchars($evento['id']) ?>">
-            <button type="submit" class="btn-voto btn-voto-contra">Rechazar propuesta</button>
-        </form>
+    <h2 class="comentarios-titulo">Resolución</h2>
+    <div class="votacion-tally">
+        <p><strong>Quórum:</strong> <?= $quorumAlcanzado ? 'alcanzado' : 'NO alcanzado' ?>
+            (<?= $conteo['a_favor'] + $conteo['en_contra'] ?> de <?= $quorumRequerido ?> votos mínimos requeridos)</p>
+        <p><strong>Ambos colectivos votaron:</strong> <?= $ambosColectivos ? 'sí' : 'no' ?></p>
+        <p><strong>Resultado que se registrará:</strong>
+            <span class="pill pill-<?= $resultadoPrevisto === 'aprobada' ? 'favor' : 'contra' ?>"><?= ucfirst($resultadoPrevisto) ?></span>
+        </p>
+        <p class="card-desc"><?= htmlspecialchars($justificacionPrevista) ?></p>
     </div>
+
+    <?php if (!$votacionCerrada): ?>
+        <p class="mensaje-flash mensaje-error">La votación cierra el <?= date('d/m/Y H:i', strtotime($evento['fecha_cierre_votacion'])) ?> — no se puede resolver todavía.</p>
+    <?php else: ?>
+        <form method="POST" action="?r=admin&accion=registrarResolucion"
+            onsubmit="return confirm('Esto va a registrar la propuesta como <?= $resultadoPrevisto ?> según el resultado automático. ¿Confirmas?');">
+            <input type="hidden" name="evento_id" value="<?= htmlspecialchars($evento['id']) ?>">
+            <button type="submit" class="btn-primario">Registrar resolución</button>
+        </form>
+    <?php endif; ?>
 </section>
 
 <?php require __DIR__ . '/../footer.php'; ?>

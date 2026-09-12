@@ -37,7 +37,7 @@
         <a href="?r=comite&accion=index">Comité</a>
     <?php endif; ?>
     <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
-    <?php if (($_GET['r'] ?? '') === 'alumno' && ($_GET['accion'] ?? 'index') === 'index'): ?>
+    <?php if (in_array('alumno', $_SESSION['usuario']['roles'] ?? [])): ?>
         <div class="kebab-menu" id="kebabMenu">
             <button type="button" class="kebab-btn" id="kebabBtn" aria-haspopup="true" aria-expanded="false" aria-label="Opciones de mis eventos">
                 <span class="kebab-dot"></span>
@@ -45,8 +45,18 @@
                 <span class="kebab-dot"></span>
             </button>
             <div class="kebab-dropdown" id="kebabDropdown">
-                <button type="button" class="kebab-opcion activa" data-vista="inscrito">Eventos en los que estoy inscrito</button>
-                <button type="button" class="kebab-opcion" data-vista="participare">Eventos en donde participaré</button>
+                <button type="button" class="kebab-opcion"
+                        hx-get="?r=alumno&accion=misEventosModal&vista=inscrito"
+                        hx-target="#modalContenido"
+                        hx-swap="innerHTML">
+                    Eventos en los que estoy inscrito
+                </button>
+                <button type="button" class="kebab-opcion"
+                        hx-get="?r=alumno&accion=misEventosModal&vista=participare"
+                        hx-target="#modalContenido"
+                        hx-swap="innerHTML">
+                    Eventos en donde participaré
+                </button>
             </div>
         </div>
     <?php endif; ?>

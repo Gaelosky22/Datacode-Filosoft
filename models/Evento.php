@@ -82,4 +82,19 @@ public function actualizar($id, $datos)
     return $this->db->request('/rest/v1/eventos?id=eq.' . urlencode($id), 'PATCH', $datos);
 }
 
+public function reducirCupo($id)
+{
+    $evento = $this->obtenerPorId($id);
+    if (!$evento) {
+        return null;
+    }
+
+    $nuevoCupo = max(0, (int)$evento['cupo'] - 1);
+    return $this->db->request(
+        '/rest/v1/eventos?id=eq.' . urlencode($id),
+        'PATCH',
+        ['cupo' => $nuevoCupo]
+    );
+}
+
 }

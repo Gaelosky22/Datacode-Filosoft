@@ -7,42 +7,6 @@
     </div>
 </section>
 
-<section class="mis-eventos container" id="misEventos">
-    <h2 id="misEventosTitulo">Eventos en los que estoy inscrito</h2>
-
-    <div class="mis-eventos-lista" id="listaInscrito">
-        <?php if (empty($misInscripciones)): ?>
-            <p class="mis-eventos-vacio">Aún no estás inscrito en ningún evento.</p>
-        <?php else: ?>
-            <?php foreach ($misInscripciones as $insc): ?>
-                <div class="mis-evento-item">
-                    <span class="mis-evento-titulo"><?= htmlspecialchars($insc['eventos']['titulo']) ?></span>
-                    <span class="mis-evento-fecha"><?= date('d/m/Y - H:i', strtotime($insc['eventos']['fecha_hora_inicio'])) ?></span>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-
-    <div class="mis-eventos-lista" id="listaParticipare" hidden>
-        <?php
-        $misEventosConfirmados = array_filter($misInscripciones, function ($insc) use ($estadoInscripcion) {
-            return !empty($estadoInscripcion[$insc['evento_id']]['gafete']);
-        });
-        ?>
-        <?php if (empty($misEventosConfirmados)): ?>
-            <p class="mis-eventos-vacio">Aún no tienes participación asegurada en ningún evento.</p>
-        <?php else: ?>
-            <?php foreach ($misEventosConfirmados as $insc): ?>
-                <div class="mis-evento-item">
-                    <span class="mis-evento-titulo"><?= htmlspecialchars($insc['eventos']['titulo']) ?></span>
-                    <span class="mis-evento-fecha"><?= date('d/m/Y - H:i', strtotime($insc['eventos']['fecha_hora_inicio'])) ?></span>
-                    <a href="?r=alumno&accion=gafete&id=<?= htmlspecialchars($estadoInscripcion[$insc['evento_id']]['inscripcion_id']) ?>" target="_blank" class="card-link">Ver/Descargar gafete →</a>
-                </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-</section>
-
 <section class="eventos container">
     <?php if ($mensaje): ?>
         <p class="mensaje-flash mensaje-<?= $mensajeTipo ?>"><?= htmlspecialchars($mensaje) ?></p>
@@ -62,6 +26,33 @@
                         <?= date('d/m/Y - H:i', strtotime($evento['fecha_hora_inicio'])) ?>
                     </p>
                     <p class="card-desc"><?= htmlspecialchars($evento['descripcion']) ?></p>
+                    <?php if ($evento['es_por_equipos']): ?>
+                        <div class="card-equipo">
+                            <?php $miEquipo = $estadoInscripcion[$evento['id']]['equipo'] ?? null; ?>
+
+                            <?php if ($miEquipo): ?>
+                                <span class="badge-inscrito">Tu equipo: <?= htmlspecialchars($miEquipo['equipos']['nombre'] ?? '') ?></span>
+
+                            <?php elseif (($estadoInscripcion[$evento['id']] ?? null) && $evento['modalidad_equipos'] === 'libre'): ?>
+                                <?php $disponibles = $equiposLibresPorEvento[$evento['id']] ?? []; ?>
+                                <?php if (empty($disponibles)): ?>
+                                    <span class="card-meta">Sin equipos con lugar disponible todavía.</span>
+                                <?php else: ?>
+                                    <form method="POST" action="?r=equipo&accion=elegir">
+                                        <select name="equipo_id" required>
+                                            <?php foreach ($disponibles as $eq): ?>
+                                                <option value="<?= htmlspecialchars($eq['id']) ?>"><?= htmlspecialchars($eq['nombre']) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <button type="submit" class="btn-inscribir">Unirme a equipo</button>
+                                    </form>
+                                <?php endif; ?>
+
+                            <?php elseif (($estadoInscripcion[$evento['id']] ?? null) && $evento['modalidad_equipos'] === 'aleatoria'): ?>
+                                <span class="card-meta">Se te asignará un equipo automáticamente al inscribirte.</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="card-footer">
                         <span class="card-cupo"><?= (int)$evento['cupo'] ?> lugares</span>
 

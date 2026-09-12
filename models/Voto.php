@@ -40,4 +40,23 @@ class Voto
             'sentido' => $sentido,
         ]);
     }
+
+    public function obtenerColectivosQueVotaron($eventoId)
+    {
+        $votos = $this->db->request(
+            '/rest/v1/votos?evento_id=eq.' . urlencode($eventoId)
+            . '&select=usuarios(usuario_roles(roles(nombre)))'
+        );
+
+        $colectivos = ['alumno' => false, 'docente' => false];
+        foreach ($votos as $v) {
+            $rolesDelVotante = $v['usuarios']['usuario_roles'] ?? [];
+            foreach ($rolesDelVotante as $ur) {
+                $nombreRol = $ur['roles']['nombre'] ?? null;
+                if ($nombreRol === 'alumno') $colectivos['alumno'] = true;
+                if ($nombreRol === 'docente') $colectivos['docente'] = true;
+            }
+        }
+        return $colectivos;
+    }
 }
