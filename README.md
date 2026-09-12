@@ -29,6 +29,8 @@ El sistema permite:
 | Tipografía | Google Fonts — Fraunces (vía CDN) |
 | Base de datos | PostgreSQL en Supabase, consumida vía API REST (PostgREST) |
 | Autenticación | Sesiones nativas de PHP + tabla `usuarios` propia (sin Supabase Auth) |
+| Contenedorización | Docker |
+| Despliegue | Render.com |
 
 No se usa Composer ni dependencias instaladas localmente — todo el frontend se
 carga por CDN y el backend es PHP puro con `curl` para hablar con Supabase.
@@ -137,6 +139,14 @@ datacode/
 Ver `docs/03_alcance_final_v2.md` para el detalle completo de reglas de
 negocio, prioridades de desarrollo y criterios de aceptación del prototipo.
 
+## Despliegue
+
+El proyecto está contenedorizado con **Docker** y se exhibe públicamente a
+través de **[Render.com](https://render.com/)**, usando ese Dockerfile como
+imagen de despliegue. Render se encarga del build de la imagen y del hosting
+del contenedor, sin necesidad de administrar un VPS manualmente para la
+demo pública del Buildathon.
+
 ## Licencia
 
 Este proyecto se distribuye bajo licencia MIT — ver `LICENSE.md`.
@@ -146,3 +156,4 @@ Este proyecto se distribuye bajo licencia MIT — ver `LICENSE.md`.
 - [HTMX](https://htmx.org/) — licencia BSD 2-Clause.
 - [Google Fonts — Fraunces](https://fonts.google.com/specimen/Fraunces) — licencia SIL Open Font License.
 - [Supabase](https://supabase.com/) — plataforma de base de datos utilizada como backend.
+- [Render](https://render.com/) — plataforma de hosting usada para el despliegue y la demo pública del proyecto.
