@@ -4,6 +4,8 @@ require_once __DIR__ . '/../models/Evento.php';
 require_once __DIR__ . '/../models/Inscripcion.php';
 require_once __DIR__ . '/../models/Gafete.php';
 require_once __DIR__ . '/../models/PagoSimulado.php';
+require_once __DIR__ . '/../models/Equipo.php';
+require_once __DIR__ . '/../models/EquipoMiembro.php';
 
 class AlumnoController
 {
@@ -26,6 +28,8 @@ class AlumnoController
 
         $gafeteModel = new Gafete();
         $pagoModel = new PagoSimulado();
+        $equipoModel = new Equipo();
+        $miembroModel = new EquipoMiembro();
 
         $estadoInscripcion = [];
         foreach ($inscripcionesPorEvento as $eventoId => $insc) {
@@ -33,7 +37,24 @@ class AlumnoController
                 'inscripcion_id' => $insc['id'],
                 'gafete' => $gafeteModel->obtenerPorInscripcion($insc['id']),
                 'pago' => $pagoModel->obtenerPorInscripcion($insc['id']),
+                'equipo' => $miembroModel->obtenerDelUsuarioEnEvento($eventoId, $_SESSION['usuario']['id']),
             ];
+        }
+
+        // Para eventos por equipos en modalidad "libre" donde el alumno ya está
+        // inscrito pero aún no tiene equipo, calculamos cuáles tienen lugar.
+        $equiposLibresPorEvento = [];
+        foreach ($eventos as $evento) {
+            $yaTieneEquipo = !empty($estadoInscripcion[$evento['id']]['equipo']);
+            if ($evento['es_por_equipos'] && $evento['modalidad_equipos'] === 'libre' && !$yaTieneEquipo) {
+                $conEspacio = [];
+                foreach ($equipoModel->obtenerPorEvento($evento['id']) as $eq) {
+                    if ($miembroModel->contarPorEquipo($eq['id']) < $eq['tamano_max']) {
+                        $conEspacio[] = $eq;
+                    }
+                }
+                $equiposLibresPorEvento[$evento['id']] = $conEspacio;
+            }
         }
 
         $esAlumno = in_array('alumno', $_SESSION['usuario']['roles'] ?? []);
@@ -59,6 +80,10 @@ class AlumnoController
             $this->redirigirConError('Ese evento ya no existe.');
         }
 
+        if ((int)$evento['cupo'] <= 0) {
+            $this->redirigirConError('Lo sentimos, este evento ya no tiene lugares disponibles.');
+        }
+
         $inscripcionModel = new Inscripcion();
         $existentes = $inscripcionModel->delUsuario($usuarioId);
         $fechaNueva = date('Y-m-d', strtotime($evento['fecha_hora_inicio']));
@@ -80,11 +105,30 @@ class AlumnoController
             $this->redirigirConError('No se pudo completar tu inscripción. Intenta de nuevo.');
         }
 
+        if ($evento['es_por_equipos'] && $evento['modalidad_equipos'] === 'aleatoria') {
+            $equipoModel = new Equipo();
+            $miembroModel = new EquipoMiembro();
+
+            $conEspacio = [];
+            foreach ($equipoModel->obtenerPorEvento($eventoId) as $eq) {
+                if ($miembroModel->contarPorEquipo($eq['id']) < $eq['tamano_max']) {
+                    $conEspacio[] = $eq;
+                }
+            }
+
+            if (!empty($conEspacio)) {
+                $elegido = $conEspacio[array_rand($conEspacio)];
+                $miembroModel->crear($elegido['id'], $usuarioId);
+            }
+        }
+
         if (!$evento['tiene_cuota']) {
             $gafeteModel = new Gafete();
             $numeroParticipante = $inscripcionModel->contarPorEvento($eventoId);
             $folio = $gafeteModel->generarFolio($eventoId, $numeroParticipante);
             $gafeteModel->crear($inscripcionId, $folio, 'alumno');
+
+            $eventoModel->reducirCupo($eventoId);
 
             $this->redirigirConExito('Te inscribiste a "' . $evento['titulo'] . '". Tu gafete ya está listo.');
         }
@@ -119,6 +163,8 @@ class AlumnoController
         $numeroParticipante = $inscripcionModel->contarPorEvento($eventoId);
         $folio = $gafeteModel->generarFolio($eventoId, $numeroParticipante);
         $gafeteModel->crear($inscripcionId, $folio, 'alumno');
+
+        $eventoModel->reducirCupo($eventoId);
 
         $this->redirigirConExito('Pago realizado — simulación. No se efectuó ningún cobro real. Tu gafete ya está listo.');
     }

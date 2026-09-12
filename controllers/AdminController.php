@@ -41,32 +41,6 @@ public function propuestas()
     require __DIR__ . '/../views/admin/propuestas.php';
 }
 
-public function resolver()
-{
-    Auth::requerirRol('administrador');
-
-    $eventoId = $_GET['id'] ?? null;
-    $eventoModel = new Evento();
-    $evento = $eventoModel->obtenerPorId($eventoId);
-
-    if (!$evento) {
-        http_response_code(404);
-        echo 'Propuesta no encontrada';
-        return;
-    }
-
-    $votoModel = new Voto();
-    $conteo = $votoModel->contarPorEvento($eventoId);
-
-    $comentarioModel = new Comentario();
-    $comentarios = $comentarioModel->obtenerPorEvento($eventoId);
-
-    $mensaje = $_SESSION['flash_mensaje'] ?? null;
-    $mensajeTipo = $_SESSION['flash_tipo'] ?? null;
-    unset($_SESSION['flash_mensaje'], $_SESSION['flash_tipo']);
-
-    require __DIR__ . '/../views/admin/resolver.php';
-}
 
 public function guardarEdicion()
 {
@@ -110,7 +84,36 @@ public function guardarEdicion()
     $this->redirigirAResolver($eventoId, 'Cambios guardados.', 'exito');
 }
 
-public function aprobar()
+public function resolver()
+{
+    Auth::requerirRol('administrador');
+
+    $eventoId = $_GET['id'] ?? null;
+    $eventoModel = new Evento();
+    $evento = $eventoModel->obtenerPorId($eventoId);
+
+    if (!$evento) {
+        http_response_code(404);
+        echo 'Propuesta no encontrada';
+        return;
+    }
+
+    $calculo = $this->calcularResolucion($eventoId, $evento);
+    $votacionCerrada = strtotime($evento['fecha_cierre_votacion']) <= time();
+
+    $comentarioModel = new Comentario();
+    $comentarios = $comentarioModel->obtenerPorEvento($eventoId);
+
+    $mensaje = $_SESSION['flash_mensaje'] ?? null;
+    $mensajeTipo = $_SESSION['flash_tipo'] ?? null;
+    unset($_SESSION['flash_mensaje'], $_SESSION['flash_tipo']);
+
+    extract($calculo); // $conteo, $quorumRequerido, $quorumAlcanzado, $ambosColectivos, $resultadoPrevisto, $justificacionPrevista
+
+    require __DIR__ . '/../views/admin/resolver.php';
+}
+
+public function registrarResolucion()
 {
     Auth::requerirRol('administrador');
 
@@ -122,35 +125,73 @@ public function aprobar()
         $this->redirigirAResolver($eventoId, 'Esta propuesta ya fue resuelta.', 'error');
     }
 
-    $eventoModel->actualizar($eventoId, [
-        'estado' => 'publicado',
-        'bloqueado' => true,
+    if (strtotime($evento['fecha_cierre_votacion']) > time()) {
+        $this->redirigirAResolver($eventoId, 'La votación sigue abierta, no se puede resolver todavía.', 'error');
+    }
+
+    $calculo = $this->calcularResolucion($eventoId, $evento);
+
+    $resolucionModel = new ResolucionVotacion();
+    $resolucionModel->crear([
+        'evento_id' => $eventoId,
+        'votos_a_favor' => $calculo['conteo']['a_favor'],
+        'votos_en_contra' => $calculo['conteo']['en_contra'],
+        'quorum_requerido' => $calculo['quorumRequerido'],
+        'quorum_alcanzado' => $calculo['quorumAlcanzado'],
+        'resultado' => $calculo['resultadoPrevisto'],
+        'justificacion' => $calculo['justificacionPrevista'],
+        'registrada_por' => $_SESSION['usuario']['id'],
     ]);
 
-    $_SESSION['flash_mensaje'] = 'Propuesta "' . $evento['titulo'] . '" aprobada y publicada. Ya está disponible para inscripción.';
-    $_SESSION['flash_tipo'] = 'exito';
+    $eventoModel->actualizar($eventoId, $calculo['resultadoPrevisto'] === 'aprobada'
+        ? ['estado' => 'publicado', 'bloqueado' => true]
+        : ['estado' => 'rechazado']
+    );
+
+    $_SESSION['flash_mensaje'] = 'Propuesta "' . $evento['titulo'] . '" ' . $calculo['resultadoPrevisto'] . '. ' . $calculo['justificacionPrevista'];
+    $_SESSION['flash_tipo'] = $calculo['resultadoPrevisto'] === 'aprobada' ? 'exito' : 'error';
     header('Location: ?r=admin&accion=propuestas');
     exit;
 }
 
-public function rechazar()
+private function calcularResolucion($eventoId, $evento)
 {
-    Auth::requerirRol('administrador');
+    $votoModel = new Voto();
+    $conteo = $votoModel->contarPorEvento($eventoId);
+    $colectivos = $votoModel->obtenerColectivosQueVotaron($eventoId);
 
-    $eventoId = $_POST['evento_id'] ?? null;
-    $eventoModel = new Evento();
-    $evento = $eventoModel->obtenerPorId($eventoId);
+    $rolModel = new Rol();
+    $totalComite = $rolModel->contarMiembrosComite();
+    $quorumRequerido = (int)ceil($totalComite / 2);
+    $totalVotos = $conteo['a_favor'] + $conteo['en_contra'];
+    $quorumAlcanzado = $totalComite > 0 && $totalVotos >= $quorumRequerido;
+    $ambosColectivos = $colectivos['alumno'] && $colectivos['docente'];
 
-    if (!$evento || $evento['estado'] !== 'propuesta') {
-        $this->redirigirAResolver($eventoId, 'Esta propuesta ya fue resuelta.', 'error');
+    if (!$quorumAlcanzado) {
+        $resultado = 'rechazada';
+        $justificacion = "Sin quórum: se necesitaban al menos {$quorumRequerido} votos ({$totalVotos} emitidos de {$totalComite} miembros del comité).";
+    } elseif (!$ambosColectivos) {
+        $resultado = 'rechazada';
+        $justificacion = 'No participaron ambos colectivos (alumnos y docentes) en la votación.';
+    } elseif ($conteo['a_favor'] > $conteo['en_contra']) {
+        $resultado = 'aprobada';
+        $justificacion = "Mayoría a favor ({$conteo['a_favor']} a favor, {$conteo['en_contra']} en contra).";
+    } elseif ($conteo['a_favor'] === $conteo['en_contra']) {
+        $resultado = 'rechazada';
+        $justificacion = "Empate ({$conteo['a_favor']}-{$conteo['en_contra']}): sin voto de desempate, la propuesta se rechaza.";
+    } else {
+        $resultado = 'rechazada';
+        $justificacion = "Mayoría en contra ({$conteo['en_contra']} en contra, {$conteo['a_favor']} a favor).";
     }
 
-    $eventoModel->actualizar($eventoId, ['estado' => 'rechazado']);
-
-    $_SESSION['flash_mensaje'] = 'Propuesta "' . $evento['titulo'] . '" rechazada.';
-    $_SESSION['flash_tipo'] = 'exito';
-    header('Location: ?r=admin&accion=propuestas');
-    exit;
+    return [
+        'conteo' => $conteo,
+        'quorumRequerido' => $quorumRequerido,
+        'quorumAlcanzado' => $quorumAlcanzado,
+        'ambosColectivos' => $ambosColectivos,
+        'resultadoPrevisto' => $resultado,
+        'justificacionPrevista' => $justificacion,
+    ];
 }
 
 private function redirigirAResolver($eventoId, $mensaje, $tipo)
