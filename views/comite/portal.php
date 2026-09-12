@@ -22,11 +22,10 @@
         <?php endif; ?>
 
         <?php if ($esComite): ?>
-            <article class="comite-tarjeta">
+            <a href="?r=comite&accion=propuestas" class="comite-tarjeta">
                 <h3>Propuestas por votar</h3>
                 <p class="card-desc">Revisa, comenta y vota las propuestas pendientes.</p>
-                <span class="badge-proximamente">Próximamente</span>
-            </article>
+            </a>
             <article class="comite-tarjeta">
                 <h3>Presupuesto de eventos</h3>
                 <p class="card-desc">Consulta el desglose de costos y la proyección de ingresos.</p>
