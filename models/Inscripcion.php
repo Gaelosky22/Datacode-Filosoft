@@ -25,4 +25,12 @@ class Inscripcion
             'usuario_id' => $usuarioId,
         ]);
     }
+
+    public function contarPorEvento($eventoId)
+{
+    $resultado = $this->db->request(
+        '/rest/v1/inscripciones?evento_id=eq.' . urlencode($eventoId) . '&select=id'
+    );
+    return count($resultado);
+}
 }

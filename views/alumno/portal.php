@@ -17,7 +17,6 @@
             <p>No hay eventos disponibles en tu sede por el momento.</p>
         <?php else: ?>
             <?php foreach ($eventos as $evento): ?>
-                <?php $yaInscrito = in_array($evento['id'], $idsInscritos); ?>
                 <div class="card-evento card-evento-alumno">
                     <span class="pill pill-<?= strtolower($evento['tipo']) ?>"><?= ucfirst($evento['tipo']) ?></span>
                     <h3><?= htmlspecialchars($evento['titulo']) ?></h3>
@@ -29,13 +28,31 @@
                     <p class="card-desc"><?= htmlspecialchars($evento['descripcion']) ?></p>
                     <div class="card-footer">
                         <span class="card-cupo"><?= (int)$evento['cupo'] ?> lugares</span>
-                        <?php if ($yaInscrito): ?>
-                            <span class="badge-inscrito">Ya inscrito</span>
-                        <?php else: ?>
-                            <form method="POST" action="?r=alumno&accion=inscribir">
+
+                        <?php $estado = $estadoInscripcion[$evento['id']] ?? null; ?>
+
+                        <?php if (!$estado): ?>
+                            <?php if ($esAlumno): ?>
+                                <form method="POST" action="?r=alumno&accion=inscribir">
+                                    <input type="hidden" name="evento_id" value="<?= htmlspecialchars($evento['id']) ?>">
+                                    <button type="submit" class="btn-inscribir">Inscribirme</button>
+                                </form>
+                            <?php else: ?>
+                                <span class="badge-solo-alumnos">Solo alumnos pueden inscribirse</span>
+                            <?php endif; ?>
+
+                        <?php elseif ($evento['tiene_cuota'] && !$estado['pago']): ?>
+                            <form method="POST" action="?r=alumno&accion=simularPago">
+                                <input type="hidden" name="inscripcion_id" value="<?= htmlspecialchars($estado['inscripcion_id']) ?>">
                                 <input type="hidden" name="evento_id" value="<?= htmlspecialchars($evento['id']) ?>">
-                                <button type="submit" class="btn-inscribir">Inscribirme</button>
+                                <button type="submit" class="btn-inscribir">Simular pago ($<?= number_format($evento['cuota'], 2) ?>)</button>
                             </form>
+
+                        <?php elseif ($estado['gafete']): ?>
+                            <a href="?r=alumno&accion=gafete&id=<?= htmlspecialchars($estado['inscripcion_id']) ?>" target="_blank" class="card-link">Descargar gafete →</a>
+
+                        <?php else: ?>
+                            <span class="badge-inscrito">Ya inscrito</span>
                         <?php endif; ?>
                     </div>
                 </div>

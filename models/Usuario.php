@@ -19,4 +19,9 @@ class Usuario
 
     return $resultado[0] ?? null;
 }
+
+public function crear($datos)
+{
+    return $this->db->request('/rest/v1/usuarios', 'POST', $datos);
+}
 }

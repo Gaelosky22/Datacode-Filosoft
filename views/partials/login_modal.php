@@ -16,4 +16,9 @@
 
         <button type="submit" class="btn-primario">Ingresar</button>
     </form>
+
+    <p class="modal-alt-accion">
+        ¿No tienes cuenta?
+        <a href="#" hx-get="?r=auth&accion=registro" hx-target="#modalContenido" hx-swap="innerHTML" onclick="return false;">Regístrate</a>
+    </p>
 </div>

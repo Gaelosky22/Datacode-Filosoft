@@ -338,3 +338,41 @@ h1, h2, h3 {
   color: var(--tinta-suave);
   font-style: italic;
 }
+
+.badge-solo-alumnos {
+  font-size: 0.8rem;
+  color: var(--tinta-suave);
+  font-style: italic;
+}
+
+.form-login select {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: #FFFFFF;
+}
+.form-login select:focus {
+  outline: none;
+  border-color: var(--guinda);
+}
+
+.modal-alt-accion {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+.modal-alt-accion a {
+  color: var(--guinda);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.card-cuota {
+  font-size: 0.85rem;
+  color: var(--guinda-dark);
+  font-weight: 500;
+  margin-top: -0.4rem;
+}
