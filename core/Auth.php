@@ -18,4 +18,14 @@ class Auth
             exit;
         }
     }
+    public static function requerirAlgunRol(array $roles)
+{
+    self::requerirLogin();
+    $rolesUsuario = $_SESSION['usuario']['roles'] ?? [];
+    if (empty(array_intersect($roles, $rolesUsuario))) {
+        http_response_code(403);
+        require __DIR__ . '/../views/errores/403.php';
+        exit;
+    }
+}
 }

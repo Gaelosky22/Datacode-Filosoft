@@ -19,7 +19,7 @@
         <div class="hero-art" aria-hidden="true">
             <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
             <span class="art-caption">COMUNIDAD · SOFTWARE · IDEAS</span>
-            <div class="art-code">&lt; / &gt;</div>
+            <img class="art-logo" src="/assets/img/datacode-logo.png" alt="">
             <div class="art-label"><span class="art-dot"></span> El siguiente paso empieza aquí</div>
             <span class="art-index">DATA CODE / UAdeO</span>
         </div>

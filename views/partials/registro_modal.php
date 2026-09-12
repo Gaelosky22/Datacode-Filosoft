@@ -1,6 +1,6 @@
 <div class="modal-card modal-login">
     <button class="modal-cerrar" onclick="cerrarModal()" aria-label="Cerrar">&times;</button>
-    <span class="modal-emblem" aria-hidden="true">DC</span>
+    <span class="modal-emblem" aria-hidden="true"><img src="/assets/img/datacode-logo.png" alt=""></span>
     <h2>Crear cuenta</h2>
     <p class="modal-desc">Regístrate con tu matrícula de alumno.</p>
 

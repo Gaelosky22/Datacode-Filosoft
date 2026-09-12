@@ -9,7 +9,7 @@
 </head>
 <body class="gafete-page">
     <div class="gafete">
-        <div class="gafete-emblema">DC</div>
+        <div class="gafete-emblema"><img src="/assets/img/datacode-logo.png" alt="Data Code"></div>
         <p class="rol"><?= htmlspecialchars(ucfirst($gafete['tipo'])) ?></p>
         <h1><?= htmlspecialchars($gafete['inscripciones']['usuarios']['nombre']) ?></h1>
         <p class="gafete-dato"><?= htmlspecialchars($gafete['inscripciones']['eventos']['titulo']) ?></p>

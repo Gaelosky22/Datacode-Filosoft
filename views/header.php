@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+    <link rel="icon" href="/assets/img/datacode-logo.png" type="image/png">
     <link rel="stylesheet" href="/assets/css/uadeo-theme.css">
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 </head>
@@ -16,7 +17,7 @@
 <header class="site-header">
     <div class="header-top">
         <a href="/" class="brand">
-            <span class="brand-emblem">DC</span>
+            <span class="brand-emblem"><img src="/assets/img/datacode-logo.png" alt=""></span>
             <span class="brand-text">
                 <span class="brand-name">Data Code</span>
                 <span class="brand-sub">UAdeO · Unidad Regional Guamúchil</span>
@@ -31,6 +32,12 @@
             <a href="?r=inicio&accion=historial">Eventos pasados</a>
             <?php if (!empty($_SESSION['usuario'])): ?>
                 <a href="?r=alumno&accion=index">Eventos por sede</a>
+                <?php
+                $rolesStaff = ['comite', 'docente', 'coordinacion', 'administrador'];
+                if (array_intersect($rolesStaff, $_SESSION['usuario']['roles'] ?? [])):
+                ?>
+                    <a href="?r=comite&accion=index">Comité</a>
+                <?php endif; ?>
                 <span class="nav-usuario"><?= htmlspecialchars($_SESSION['usuario']['nombre']) ?></span>
                 <a href="?r=auth&accion=logout" class="nav-cta">Salir</a>
             <?php else: ?>

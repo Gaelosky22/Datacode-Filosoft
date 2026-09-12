@@ -2,7 +2,7 @@
 
 <footer class="site-footer">
     <div class="container footer-inner">
-        <span class="brand-emblem brand-emblem-sm">DC</span>
+        <span class="brand-emblem brand-emblem-sm"><img src="/assets/img/datacode-logo.png" alt=""></span>
         <p>Data Code — UAdeO Unidad Regional Guamúchil</p>
     </div>
 </footer>
