@@ -37,7 +37,7 @@ class SupabaseClient
         $respuesta = curl_exec($ch);
         $error = curl_error($ch);
         $codigoHttp = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
+        //curl_close($ch);
 
         if ($error) {
             throw new Exception("Error al conectar con Supabase: $error");
