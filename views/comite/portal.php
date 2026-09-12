@@ -42,6 +42,10 @@
         <?php endif; ?>
 
         <?php if ($esAdministrador): ?>
+            <a href="?r=admin&accion=propuestas" class="comite-tarjeta">
+                <h3>Resolver propuestas</h3>
+                <p class="card-desc">Aprueba o rechaza propuestas antes de que cierre la votación.</p>
+            </a>
             <a href="?r=admin&accion=comite" class="comite-tarjeta">
                 <h3>Gestión de usuarios y comité</h3>
                 <p class="card-desc">Agrega o quita miembros del comité por sede.</p>

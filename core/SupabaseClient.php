@@ -24,7 +24,7 @@ class SupabaseClient
             'Content-Type: application/json',
         ];
 
-        if ($metodo === 'POST') {
+        if (in_array($metodo, ['POST', 'PATCH'])) {
             $headers[] = 'Prefer: return=representation';
         }
 

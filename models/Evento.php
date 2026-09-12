@@ -70,4 +70,16 @@ public function obtenerPropuestasParaComite($sedeId)
     return $eventos;
 }
 
+public function obtenerTodasPropuestas()
+{
+    return $this->db->request(
+        '/rest/v1/eventos?estado=eq.propuesta&select=*,sedes(nombre)&order=fecha_cierre_votacion.asc'
+    );
+}
+
+public function actualizar($id, $datos)
+{
+    return $this->db->request('/rest/v1/eventos?id=eq.' . urlencode($id), 'PATCH', $datos);
+}
+
 }
