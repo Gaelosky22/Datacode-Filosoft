@@ -115,6 +115,51 @@ h1, h2, h3 {
   max-width: 560px;
 }
 
+/* Tarjeta "Data Code 2.0 — Buildathon 2027" */
+.reto-seccion { padding: 2.5rem 1.5rem 0; }
+.card-reto {
+  background: var(--guinda-tint);
+  border: 1px solid var(--guinda);
+  border-radius: 10px;
+  padding: 1.6rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.card-reto:hover, .card-reto:focus-visible {
+  box-shadow: 0 2px 12px rgba(157, 44, 83, 0.15);
+  outline: none;
+}
+.card-reto h3 { font-size: 1.25rem; margin: 0.7rem 0 0.5rem; color: var(--tinta); }
+
+/* Modal ancho — rúbrica del reto */
+.modal-card-ancho { max-width: 760px; }
+.rubrica-bloque { margin-top: 1.5rem; }
+.rubrica-bloque h3 { font-size: 1.05rem; color: var(--tinta); margin-bottom: 0.6rem; }
+.rubrica-bloque p { font-size: 0.92rem; color: var(--tinta-suave); margin-bottom: 0.6rem; }
+.rubrica-bloque p strong { color: var(--tinta); }
+.rubrica-datos { display: flex; flex-direction: column; gap: 0.7rem; margin-top: 0.9rem; }
+.rubrica-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-top: 1px solid var(--borde);
+  padding-top: 0.7rem;
+}
+.rubrica-dato span:first-child { font-size: 0.8rem; font-weight: 500; color: var(--guinda-dark); text-transform: uppercase; letter-spacing: 0.03em; }
+.rubrica-dato span:last-child { font-size: 0.92rem; color: var(--tinta-suave); }
+.rubrica-lista { display: flex; flex-direction: column; gap: 0.7rem; }
+.rubro-item {
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+}
+.rubro-encabezado { display: flex; justify-content: space-between; align-items: center; font-weight: 500; color: var(--tinta); margin-bottom: 0.3rem; }
+.rubro-pts { color: var(--guinda); font-weight: 600; }
+.rubro-item p { font-size: 0.88rem; color: var(--tinta-suave); margin: 0; }
+.rubrica-notas { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.rubrica-notas li { font-size: 0.92rem; color: var(--tinta-suave); }
+.rubrica-notas li strong { color: var(--tinta); }
+
 /* Mis eventos (portal de alumnos) */
 .mis-eventos { padding: 2.5rem 1.5rem 0; }
 .mis-eventos h2 { margin-bottom: 1.1rem; color: var(--tinta); }

@@ -25,6 +25,21 @@ document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') cerrarModal();
 });
 
+// Tarjeta de "Data Code 2.0 — Buildathon 2027" en el inicio
+function abrirRubricaModal() {
+    const overlay = document.getElementById('rubricaOverlay');
+    if (overlay) overlay.classList.add('abierto');
+}
+
+function cerrarRubricaModal() {
+    const overlay = document.getElementById('rubricaOverlay');
+    if (overlay) overlay.classList.remove('abierto');
+}
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') cerrarRubricaModal();
+});
+
 // Menú kebab del portal de alumnos (Mis eventos)
 document.addEventListener('DOMContentLoaded', function () {
     const kebabBtn = document.getElementById('kebabBtn');
