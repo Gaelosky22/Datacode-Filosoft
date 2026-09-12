@@ -152,6 +152,8 @@ h2 {
 }
 .nav-toggle {
     display:none;
+    min-width:44px;
+    min-height:44px;
     background:none;
     border:1px solid var(--borde);
     padding:12px;
@@ -506,8 +508,8 @@ body:has(.modal-overlay.abierto) {
     right:16px;
     display:grid;
     place-items:center;
-    width:34px;
-    height:34px;
+    width:44px;
+    height:44px;
     border:0;
     border-radius:50%;
     background:var(--papel);
@@ -737,16 +739,38 @@ body:has(.modal-overlay.abierto) {
         gap:8px;
         border-bottom:1px solid var(--borde);
         box-shadow:0 12px 18px #2417200a;
+        max-height:calc(100dvh - 79px);
+        overflow-y:auto;
+        overscroll-behavior:contain;
     }
     .site-nav.abierto {
         display:flex;
     }
     .site-nav a {
+        min-height:44px;
+        display:flex;
+        align-items:center;
         padding:10px 12px;
     }
     .nav-usuario {
         padding:10px 12px;
         max-width:none;
+    }
+    .site-nav .nav-cta {
+        justify-content:center;
+        text-align:center;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+        transform:translateY(7px) rotate(45deg);
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity:0;
+    }
+    .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+        transform:translateY(-7px) rotate(-45deg);
+    }
+    .nav-toggle span {
+        transition:transform .18s,opacity .18s;
     }
     .hero-layout {
         gap:32px;
@@ -769,7 +793,7 @@ body:has(.modal-overlay.abierto) {
         font-size:1.2rem;
     }
     .brand-sub {
-        font-size:.58rem;
+        font-size:.64rem;
     }
     .brand-emblem {
         width:54px;
@@ -781,7 +805,7 @@ body:has(.modal-overlay.abierto) {
         gap:36px;
     }
     .hero h1 {
-        font-size:2.4rem;
+        font-size:clamp(2.05rem,10.5vw,2.4rem);
     }
     .hero-art {
         height:235px;
@@ -818,11 +842,11 @@ body:has(.modal-overlay.abierto) {
         padding:23px;
     }
     .modal-overlay {
-        padding:12px;
+        padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));
     }
     .modal-card {
         padding:28px 23px;
-        max-height:calc(100dvh - 24px);
+        max-height:calc(100dvh - max(24px,env(safe-area-inset-top) + env(safe-area-inset-bottom)));
         border-radius:16px;
     }
     .modal-card h2 {
@@ -1070,8 +1094,8 @@ a.comite-tarjeta:hover {
     position:relative;
 }
 .kebab-btn {
-    width:36px;
-    height:36px;
+    width:44px;
+    height:44px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -1082,6 +1106,9 @@ a.comite-tarjeta:hover {
     border:1px solid var(--borde);
     border-radius:9px;
     cursor:pointer;
+}
+.kebab-label {
+    display:none;
 }
 .kebab-btn:hover {
     background:var(--guinda-tint);
@@ -1444,6 +1471,24 @@ a.comite-tarjeta:hover {
         width:100%;
         padding-inline:12px;
     }
+    .kebab-btn {
+        width:100%;
+        flex-direction:row;
+        align-items:center;
+        justify-content:flex-start;
+        padding-inline:0;
+        color:var(--tinta-suave);
+        background:transparent;
+        border:0;
+        border-radius:0;
+        font-size:.82rem;
+    }
+    .kebab-label {
+        display:inline;
+    }
+    .kebab-dot {
+        display:none;
+    }
     .kebab-dropdown {
         left:12px;
         right:auto;
@@ -1471,5 +1516,176 @@ a.comite-tarjeta:hover {
     }
     .btn-filtrar {
         width:100%;
+    }
+    .tabla-scroll {
+        overflow:visible;
+        border:0;
+        background:transparent;
+    }
+    .tabla-usuarios {
+        min-width:0;
+        display:block;
+        background:transparent;
+    }
+    .tabla-usuarios thead {
+        position:absolute;
+        width:1px;
+        height:1px;
+        padding:0;
+        margin:-1px;
+        overflow:hidden;
+        clip:rect(0,0,0,0);
+        white-space:nowrap;
+        border:0;
+    }
+    .tabla-usuarios tbody {
+        display:grid;
+        gap:14px;
+    }
+    .tabla-usuarios tr {
+        display:block;
+        padding:10px 16px;
+        background:#fff;
+        border:1px solid var(--borde);
+        border-radius:12px;
+    }
+    .tabla-usuarios td {
+        min-height:42px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:18px;
+        padding:9px 0;
+        text-align:right;
+    }
+    .tabla-usuarios td::before {
+        flex-shrink:0;
+        color:var(--tinta-suave);
+        font-size:.64rem;
+        font-weight:700;
+        letter-spacing:.05em;
+        text-transform:uppercase;
+    }
+    .tabla-usuarios td:nth-child(1)::before { content:"Nombre"; }
+    .tabla-usuarios td:nth-child(2)::before { content:"Matrícula"; }
+    .tabla-usuarios td:nth-child(3)::before { content:"Sede"; }
+    .tabla-usuarios td:nth-child(4)::before { content:"Roles"; }
+    .tabla-usuarios td:nth-child(5)::before { content:"Comité"; }
+}
+
+@media(max-width:420px) {
+    .container {
+        padding-inline:18px;
+    }
+    .header-top {
+        padding:14px 18px;
+    }
+    .site-nav {
+        padding:16px 18px max(16px,env(safe-area-inset-bottom));
+        max-height:calc(100dvh - 69px);
+    }
+    .brand {
+        gap:8px;
+    }
+    .brand-emblem {
+        width:48px;
+        height:32px;
+    }
+    .brand-name {
+        font-size:1.08rem;
+    }
+    .hero-layout {
+        padding-block:36px;
+        gap:30px;
+    }
+    .hero-lead {
+        font-size:.9rem;
+    }
+    .hero-action {
+        min-height:46px;
+        justify-content:space-between;
+        width:100%;
+    }
+    .hero-art {
+        height:215px;
+    }
+    .art-caption {
+        font-size:.5rem;
+    }
+    .art-label {
+        max-width:82%;
+        text-align:center;
+    }
+    .hero-secundario {
+        padding:30px 0;
+    }
+    .hero-secundario h1 {
+        font-size:1.8rem;
+    }
+    .eventos {
+        padding-block:30px 42px;
+    }
+    .card-evento,.comite-tarjeta {
+        padding:20px;
+    }
+    .detalle-evento {
+        width:calc(100% - 24px);
+        padding:22px 19px;
+    }
+    .detalle-fila {
+        flex-direction:column;
+        gap:4px;
+    }
+    .detalle-fila span:last-child {
+        text-align:left;
+    }
+    .modal-card {
+        padding:25px 19px;
+    }
+    .modal-card h2 {
+        font-size:1.5rem;
+    }
+    .form-propuesta {
+        padding:20px 17px;
+    }
+    .checkbox-grid {
+        grid-template-columns:1fr;
+    }
+    .footer-inner {
+        flex-wrap:wrap;
+        padding-block:2px;
+    }
+    .gafete {
+        padding:30px 20px;
+    }
+}
+
+@media(max-width:340px) {
+    .brand-sub {
+        display:none;
+    }
+    .hero h1 {
+        font-size:1.95rem;
+    }
+    .hero-kicker,.eyebrow {
+        letter-spacing:.11em;
+    }
+    .art-caption {
+        display:none;
+    }
+    .art-logo {
+        width:64%;
+    }
+}
+
+@media(max-height:520px) and (orientation:landscape) {
+    .site-nav {
+        max-height:calc(100dvh - 60px);
+    }
+    .hero-layout {
+        padding-block:30px;
+    }
+    .hero-art {
+        height:240px;
     }
 }

@@ -42,6 +42,7 @@
     <?php if (in_array('alumno', $_SESSION['usuario']['roles'] ?? [])): ?>
         <div class="kebab-menu" id="kebabMenu">
             <button type="button" class="kebab-btn" id="kebabBtn" aria-haspopup="true" aria-expanded="false" aria-label="Opciones de mis eventos">
+                <span class="kebab-label">Mis eventos</span>
                 <span class="kebab-dot"></span>
                 <span class="kebab-dot"></span>
                 <span class="kebab-dot"></span>

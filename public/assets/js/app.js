@@ -3,9 +3,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const nav = document.getElementById('siteNav');
 
     if (boton && nav) {
+        function cerrarNavegacion() {
+            nav.classList.remove('abierto');
+            boton.setAttribute('aria-expanded', 'false');
+            boton.setAttribute('aria-label', 'Abrir menú');
+        }
+
         boton.addEventListener('click', function () {
             const abierto = nav.classList.toggle('abierto');
             boton.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            boton.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+        });
+
+        nav.querySelectorAll('a').forEach(function (enlace) {
+            enlace.addEventListener('click', cerrarNavegacion);
+        });
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 1050) cerrarNavegacion();
         });
     }
 });
