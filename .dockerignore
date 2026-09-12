@@ -1,0 +1,9 @@
+.git
+.gitignore
+.vscode
+.env
+.env.local
+.env.*.local
+*.log
+Thumbs.db
+.DS_Store
